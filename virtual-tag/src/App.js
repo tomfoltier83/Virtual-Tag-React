@@ -3,42 +3,10 @@ import ConnectModal from "./components/ConnectModal";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./utils/firebase.config";
 import BoardModal from "./components/BoardModal";
-
-
-  /// Connection to Phantom wallet
-
-const isPhantomInstalled = window.phantom?.solana?.isPhantom;
-
-const getProvider = () => {
-  if ('phantom' in window) {
-    const provider = window.phantom?.solana;
-
-    if (provider?.isPhantom) {
-      return provider;
-    }
-  }
-
-  window.open('https://phantom.app/', '_blank');
-};
-
-const provider = getProvider(); // see "Detecting the Provider"
-
-try {
-    const resp = await provider.connect();
-    console.log(resp.publicKey.toString());
-    // 26qv4GCcx98RihuK3c4T6ozB3J7L6VwCuFVc7Ta2A3Uo 
-} catch (err) {
-    // { code: 4001, message: 'User rejected the request.' }
-}
-
-
-useEffect(() => {
-  if (!provider) return;
-  // Will either automatically connect to Phantom, or do nothing.
-  provider.connect({ onlyIfTrusted: true }).catch(() => {});
-});
+import Anounces from "./components/Anounces";
 
 const App = () => {
+
   const [user, setUser] = useState(null);
 
   onAuthStateChanged(auth, (currentUser) => {
@@ -61,9 +29,11 @@ const App = () => {
         )}
         {user ? <BoardModal /> : <ConnectModal />}
       </div>
-      <div className="sells-container"></div>
+      <div className="sells-container">
+        <Anounces/>
+      </div>
     </div>
   );
-};
+}
 
 export default App;

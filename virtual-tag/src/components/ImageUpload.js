@@ -44,17 +44,17 @@ function ImageUpload(props){
              />
              <div className="image-upload">
                 <div className="image-upload__preview">
-                    {previewUrl && <img src={previewUrl} alt="preview"/>}
+                    {previewUrl && <img src={previewUrl} alt="preview" className="preview-nft"/>}
                     {!previewUrl &&(
                         <div className="center">
-                            <button className="image-upload-button" onClick={pickedImageHandler}>Add NFT</button>
+                            <button className="image-upload-button" onClick={pickedImageHandler}>Choisir un NFT</button>
                         </div>
                     )}
                 </div>
                 <div>
                     {previewUrl && (
                         <div className="center">
-                            <button className="image-upload-button" onClick={pickedImageHandler}>Change</button>
+                            <button className="image-upload-button" onClick={pickedImageHandler}>Changer</button>
                         </div>
                     )}
                 </div>
