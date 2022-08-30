@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { db, storage } from "../utils/firebase.config";
+import { auth, db, storage } from "../utils/firebase.config";
 import ImageUpload from "./ImageUpload";
-
-
+import { uuidv4 } from "@firebase/util";
 
 /// Connection to Phantom wallet
 
@@ -18,18 +17,16 @@ const getProvider = () => {
     window.open('https://phantom.app/', '_blank');
   };
 
-  const provider = getProvider(); // see "Detecting the Provider"
-
-
-
+const provider = getProvider(); // see "Detecting the Provider"
 
 const SellNft = () => {
 
-    const [data, setData]=useState({
+    const [data, setData] = useState({
+        id:0,
         name:"",
-        title:"",
-        price:"",
-        image: null
+        price:null,
+        image: null,
+        prizeOwner:"",
     });
     const [wallet, setWallet] = useState(false);
 
@@ -38,6 +35,7 @@ const SellNft = () => {
         try {
           const resp = await provider.connect();
           console.log(resp.publicKey.toString());
+          console.log(resp?.)
           if (resp) {
             setWallet(true);
           } else {
@@ -58,18 +56,8 @@ const SellNft = () => {
 
     function handleSubmit(e) {
         e.preventDefault();
-
-        // db.collection("annoncesNft")
-        //     .add({
-        //         nft: nft,
-        //         price: price,
-        //     })
-        //     .then(() => {
-        //         alert("Votre annonce a bien été postée ✔️");
-        //     })
-        //     .catch(error => {
-        //         alert(error.message);
-        //     });
+        let uid = uuidv4();
+        let userId = auth.currentUser.uid;
 
         const uploadTask = storage.ref("Annonce/"+data.image.name).put(data.image);
         uploadTask.on(
@@ -88,17 +76,21 @@ const SellNft = () => {
                 .getDownloadURL()
                 .then((imageUrl)=>{
                     db.collection("annoncesNft")
-                    .doc(data.title)
+                    .doc(uid)
                     .set({
+                        id:uid,
                         name: data.title,
                         price:data.price,
-                        image:imageUrl
+                        image:imageUrl,
+                        prizeOwner: userId
                     })
                     .then(()=>{
                         setData({
+                            id:0,
                             name:"",
-                            price:"",
-                            image:null
+                            price:0,
+                            image:null,
+                            prizeOwner: ""
                         })
                     })
                 })
@@ -114,7 +106,7 @@ const SellNft = () => {
                     <h2>Quel NFT souhaitez-vous vendre ?</h2>
                     {/* <input type="file"/> */}
                     <input type="text" onChange={HandleChange} placeholder="Nom du NFT" name="title" value={data.title}/>
-                    <input type="text" onChange={HandleChange} placeholder="Prix (en SOL)" name="price" value={data.price}/>
+                    <input type="number" onChange={HandleChange} placeholder="Prix (en SOL)" name="price" value={data.price}/>
                     <ImageUpload setData={setData}/>
                     <input type="submit" value="Déposer"/>
                 </form>
