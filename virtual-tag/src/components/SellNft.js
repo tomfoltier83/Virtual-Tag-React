@@ -35,7 +35,6 @@ const SellNft = () => {
         try {
           const resp = await provider.connect();
           console.log(resp.publicKey.toString());
-          console.log(resp?.)
           if (resp) {
             setWallet(true);
           } else {
