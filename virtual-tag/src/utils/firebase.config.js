@@ -4,7 +4,7 @@ import "firebase/compat/firestore";
 import "firebase/compat/storage";
 
 const app = firebase.initializeApp({
-  apiKey: process.env.REACT_APP_API_KEY,
+  apiKey: "AIzaSyBCCl-xvjkJ-S-gK9DhIewsJYpEMXAHTAg",
   authDomain: "virtual-tag-6eb92.firebaseapp.com",
   databaseURL: "https://virtual-tag-6eb92-default-rtdb.firebaseio.com",
   projectId: "virtual-tag-6eb92",

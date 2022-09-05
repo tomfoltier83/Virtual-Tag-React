@@ -5,22 +5,13 @@ import { auth } from "./utils/firebase.config";
 import BoardModal from "./components/BoardModal";
 import Anounce from "./components/Anounce";
 import { db } from "./utils/firebase.config";
-import { CronJob } from "cron";
+import { uuidv4 } from "@firebase/util";
 
 const App = () => {
 
   const [user, setUser] = useState(null)
   const [data, setData] = useState([])
   const [loader, setLoader] = useState(true)
-
-  var job = new CronJob(
-    '* * * * * *',
-    function() {
-      console.log('You will see this message every second');
-    },
-    null,
-    true,
-  )
 
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
