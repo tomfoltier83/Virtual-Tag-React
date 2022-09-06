@@ -20,6 +20,7 @@ const App = () => {
   const handleLogOut = async () => {
     await signOut(auth);
   }
+  //adadaadad
 
   function getData() {
       db.collection("annoncesNft").onSnapshot((querySnapshot) => {
